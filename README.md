@@ -16,15 +16,32 @@ implementation [here](https://mirio.dev/2022/09/18/implementing-a-terraform-stat
 ## Getting Started
 
 1. Click the "Use this template" button to create a new repository from this template.
-2. Create an R2 bucket in your Cloudflare account, or use an existing one.
-3. Update `wrangler.toml` with your Cloudflare account ID and custom domain and bucket name.
-4. If using basic auth, add your credentials to your worker using `wrangler secret put TFSTATE_USERNAME`
-   and `wrangler secret put TFSTATE_PASSWORD`.
-5. If using mTLS, configure your Worker
+2. Create an R2 bucket in your Cloudflare account. **Keep it private** - do NOT enable Custom Domains or R2.dev public access.
+3. Configure your environment:
+   ```bash
+   cp .env.example .env
+   # Edit .env with your CLOUDFLARE_ACCOUNT_ID and CLOUDFLARE_API_TOKEN
+   ```
+   Create your API token at [Cloudflare API Tokens](https://dash.cloudflare.com/profile/api-tokens) using the **"Edit Cloudflare Workers"** template.
+4. Update `wrangler.toml` with your Worker's custom domain route and bucket name.
+5. For local development, create `.dev.vars`:
+   ```bash
+   echo "USERNAME=terraform" > .dev.vars
+   echo "PASSWORD=your-password" >> .dev.vars
+   ```
+6. Deploy the Worker (secrets must be set after initial deployment):
+   ```bash
+   wrangler deploy
+   ```
+7. Set production secrets:
+   ```bash
+   wrangler secret put USERNAME
+   wrangler secret put PASSWORD
+   ```
+8. If using mTLS, configure your Worker
    to [require a client certificate](https://developers.cloudflare.com/ssl/client-certificates/enable-mtls/#enable-mtls).
-6. Run `wrangler publish` to deploy the Worker to your Cloudflare account.
-7. Update your Terraform configuration to use the new backend and run `terraform init`.
-8. Profit! 🚀
+9. Update your Terraform configuration to use the new backend and run `terraform init`.
+10. Profit! 🚀
 
 ```hcl
 terraform {

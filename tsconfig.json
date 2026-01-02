@@ -3,7 +3,9 @@
 		"noEmit": true,
 		"module": "esnext",
 		"target": "esnext",
-		"lib": ["esnext"],
+		"lib": [
+			"esnext"
+		],
 		"strict": true,
 		"moduleResolution": "node",
 		"types": [
@@ -13,5 +15,10 @@
 		],
 		"skipLibCheck": true
 	},
-	"exclude": ["node_modules", "dist", "test", ".wrangler"]
+	"exclude": [
+		"node_modules",
+		"dist",
+		"test",
+		".wrangler"
+	]
 }

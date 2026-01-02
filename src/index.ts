@@ -1,15 +1,9 @@
 import { Hono, type MiddlewareHandler } from "hono";
 import { basicAuth } from "hono/basic-auth";
-import type { DurableLock } from "./durableLock";
+import type { Env } from "./types/env";
 
 export { DurableLock } from "./durableLock";
-
-type Bindings = {
-	USERNAME: string;
-	PASSWORD: string;
-	TFSTATE_BUCKET: R2Bucket;
-	TFSTATE_LOCK: DurableObjectNamespace<DurableLock>;
-};
+export type { Env } from "./types/env";
 
 // LockInfo
 // https://github.com/hashicorp/terraform/blob/cb340207d8840f3d2bc5dab100a5813d1ea3122b/internal/states/statemgr/locker.go#L115
@@ -23,7 +17,7 @@ export type LockInfo = {
 	Path: string;
 };
 
-const app = new Hono<{ Bindings: Bindings }>();
+const app = new Hono<{ Bindings: Env }>();
 
 const logger = (): MiddlewareHandler => async (c, next) => {
 	await next();
