@@ -17,8 +17,7 @@ jobs:
       - run: npm install
       - name: Setup Biome
         uses: biomejs/setup-biome@v2
-        with:
-          version: 1.7.3 # Should match version in package.json
+        # Version auto-detected from package-lock.json
       - name: Run Biome
         run: biome ci .
       - run: npm run test
