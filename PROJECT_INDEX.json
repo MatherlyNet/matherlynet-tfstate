@@ -1,137 +1,141 @@
 {
-  "name": "tfstate-worker",
-  "description": "Terraform state backend using Cloudflare Workers and R2 with locking support",
-  "generated": "2026-01-02",
-  "techStack": [
-    "TypeScript",
-    "Hono",
-    "Cloudflare Workers",
-    "R2",
-    "Durable Objects"
-  ],
-  "entryPoints": {
-    "main": "src/index.ts",
-    "durableObject": "src/durableLock.ts",
-    "tests": "test/index.spec.ts"
-  },
-  "modules": {
-    "src/types/env.ts": {
-      "exports": ["Env"],
-      "description": "Environment type definitions for Worker bindings"
-    },
-    "src/index.ts": {
-      "exports": ["default", "DurableLock", "Env", "LockInfo"],
-      "routes": [
-        { "method": "GET", "path": "/health", "description": "Health check" },
-        {
-          "method": "GET",
-          "path": "/states/:projectName",
-          "description": "Get terraform state"
-        },
-        {
-          "method": "POST",
-          "path": "/states/:projectName",
-          "description": "Update terraform state"
-        },
-        {
-          "method": "LOCK|PUT",
-          "path": "/states/:projectName/lock",
-          "description": "Acquire lock"
-        },
-        {
-          "method": "UNLOCK|DELETE",
-          "path": "/states/:projectName/lock",
-          "description": "Release lock"
-        },
-        {
-          "method": "GET",
-          "path": "/states/:projectName/lock",
-          "description": "Get current lock info"
-        }
-      ]
-    },
-    "src/durableLock.ts": {
-      "exports": ["DurableLock", "LockResult"],
-      "methods": ["info", "lock", "unlock"]
-    }
-  },
-  "configuration": {
-    "wrangler.toml": "Cloudflare Worker deployment config",
-    "tsconfig.json": "TypeScript compiler options",
-    "biome.json": "Code linting and formatting",
-    "vitest.config.js": "Test runner configuration"
-  },
-  "environment": {
-    "USERNAME": {
-      "type": "secret",
-      "description": "Basic auth username",
-      "source": ".dev.vars (local) or wrangler secret (prod)"
-    },
-    "PASSWORD": {
-      "type": "secret",
-      "description": "Basic auth password",
-      "source": ".dev.vars (local) or wrangler secret (prod)"
-    },
-    "CLOUDFLARE_ACCOUNT_ID": {
-      "type": "env",
-      "description": "Cloudflare account ID",
-      "source": ".env file or environment variable"
-    },
-    "CLOUDFLARE_API_TOKEN": {
-      "type": "env",
-      "description": "API token for deployments",
-      "source": ".env file (use Edit Cloudflare Workers template)"
-    },
-    "TFSTATE_BUCKET": {
-      "type": "binding",
-      "description": "R2 bucket for state storage"
-    },
-    "TFSTATE_LOCK": {
-      "type": "binding",
-      "description": "Durable Object namespace for locks"
-    }
-  },
-  "dependencies": {
-    "runtime": {
-      "hono": "^4.11.3"
-    },
-    "dev": {
-      "@biomejs/biome": "2.3.10",
-      "@cloudflare/vitest-pool-workers": "^0.11.1",
-      "@cloudflare/workers-types": "^4.20250823.0",
-      "typescript": "^5.9.3",
-      "vitest": "4.0.16",
-      "wrangler": "^4.4.0"
-    }
-  },
-  "scripts": {
-    "dev": "wrangler dev",
-    "deploy": "wrangler deploy",
-    "test": "vitest",
-    "lint": "biome lint --write ./ && tsc --noEmit",
-    "format": "biome format --write ./"
-  },
-  "files": {
-    "source": ["src/index.ts", "src/durableLock.ts", "src/types/env.ts"],
-    "tests": ["test/index.spec.ts", "test/env.d.ts"],
-    "config": [
-      "wrangler.toml",
-      "package.json",
-      "tsconfig.json",
-      "biome.json",
-      "vitest.config.js",
-      ".env.example",
-      ".dev.vars"
-    ],
-    "docs": ["README.md"],
-    "ci": [".github/workflows/test.yaml", ".github/workflows/deploy.yaml", ".github/dependabot.yml"],
-    "examples": ["example/main.tf"]
-  },
-  "fileCount": {
-    "source": 3,
-    "tests": 2,
-    "config": 7,
-    "ci": 3,
-    "total": 15
-  }
+	"name": "tfstate-worker",
+	"description": "Terraform state backend using Cloudflare Workers and R2 with locking support",
+	"generated": "2026-01-02",
+	"techStack": [
+		"TypeScript",
+		"Hono",
+		"Cloudflare Workers",
+		"R2",
+		"Durable Objects"
+	],
+	"entryPoints": {
+		"main": "src/index.ts",
+		"durableObject": "src/durableLock.ts",
+		"tests": "test/index.spec.ts"
+	},
+	"modules": {
+		"src/types/env.ts": {
+			"exports": ["Env"],
+			"description": "Environment type definitions for Worker bindings"
+		},
+		"src/index.ts": {
+			"exports": ["default", "DurableLock", "Env", "LockInfo"],
+			"routes": [
+				{ "method": "GET", "path": "/health", "description": "Health check" },
+				{
+					"method": "GET",
+					"path": "/states/:projectName",
+					"description": "Get terraform state"
+				},
+				{
+					"method": "POST",
+					"path": "/states/:projectName",
+					"description": "Update terraform state"
+				},
+				{
+					"method": "LOCK|PUT",
+					"path": "/states/:projectName/lock",
+					"description": "Acquire lock"
+				},
+				{
+					"method": "UNLOCK|DELETE",
+					"path": "/states/:projectName/lock",
+					"description": "Release lock"
+				},
+				{
+					"method": "GET",
+					"path": "/states/:projectName/lock",
+					"description": "Get current lock info"
+				}
+			]
+		},
+		"src/durableLock.ts": {
+			"exports": ["DurableLock", "LockResult"],
+			"methods": ["info", "lock", "unlock"]
+		}
+	},
+	"configuration": {
+		"wrangler.toml": "Cloudflare Worker deployment config",
+		"tsconfig.json": "TypeScript compiler options",
+		"biome.json": "Code linting and formatting",
+		"vitest.config.js": "Test runner configuration"
+	},
+	"environment": {
+		"USERNAME": {
+			"type": "secret",
+			"description": "Basic auth username",
+			"source": ".dev.vars (local) or wrangler secret (prod)"
+		},
+		"PASSWORD": {
+			"type": "secret",
+			"description": "Basic auth password",
+			"source": ".dev.vars (local) or wrangler secret (prod)"
+		},
+		"CLOUDFLARE_ACCOUNT_ID": {
+			"type": "env",
+			"description": "Cloudflare account ID",
+			"source": ".env file or environment variable"
+		},
+		"CLOUDFLARE_API_TOKEN": {
+			"type": "env",
+			"description": "API token for deployments",
+			"source": ".env file (use Edit Cloudflare Workers template)"
+		},
+		"TFSTATE_BUCKET": {
+			"type": "binding",
+			"description": "R2 bucket for state storage"
+		},
+		"TFSTATE_LOCK": {
+			"type": "binding",
+			"description": "Durable Object namespace for locks"
+		}
+	},
+	"dependencies": {
+		"runtime": {
+			"hono": "^4.11.3"
+		},
+		"dev": {
+			"@biomejs/biome": "2.3.10",
+			"@cloudflare/vitest-pool-workers": "^0.11.1",
+			"@cloudflare/workers-types": "^4.20250823.0",
+			"typescript": "^5.9.3",
+			"vitest": "4.0.16",
+			"wrangler": "^4.4.0"
+		}
+	},
+	"scripts": {
+		"dev": "wrangler dev",
+		"deploy": "wrangler deploy",
+		"test": "vitest",
+		"lint": "biome lint --write ./ && tsc --noEmit",
+		"format": "biome format --write ./"
+	},
+	"files": {
+		"source": ["src/index.ts", "src/durableLock.ts", "src/types/env.ts"],
+		"tests": ["test/index.spec.ts", "test/env.d.ts"],
+		"config": [
+			"wrangler.toml",
+			"package.json",
+			"tsconfig.json",
+			"biome.json",
+			"vitest.config.js",
+			".env.example",
+			".dev.vars"
+		],
+		"docs": ["README.md"],
+		"ci": [
+			".github/workflows/test.yaml",
+			".github/workflows/deploy.yaml",
+			".github/dependabot.yml"
+		],
+		"examples": ["example/main.tf"]
+	},
+	"fileCount": {
+		"source": 3,
+		"tests": 2,
+		"config": 7,
+		"ci": 3,
+		"total": 15
+	}
 }

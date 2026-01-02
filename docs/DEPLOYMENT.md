@@ -236,6 +236,18 @@ Available in Cloudflare Dashboard:
 - Verify Durable Object migrations are applied
 - Review logs: `wrangler tail`
 
+**Durable Objects Error 10097 (Free Plan)**
+```
+In order to use Durable Objects with a free plan, you must create a namespace using a `new_sqlite_classes` migration
+```
+- Free plans require SQLite-backed Durable Objects
+- In `wrangler.toml`, ensure migrations use `new_sqlite_classes` (not `new_classes`):
+  ```toml
+  [[migrations]]
+  tag = "v1"
+  new_sqlite_classes = ["DurableLock"]
+  ```
+
 ### Viewing Lock Status
 
 ```bash

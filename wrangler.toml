@@ -22,4 +22,4 @@ bindings = [{ name = "TFSTATE_LOCK", class_name = "DurableLock" }]
 
 [[migrations]]
 tag = "v1"
-new_classes = ["DurableLock"]
+new_sqlite_classes = ["DurableLock"]
