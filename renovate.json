@@ -1,0 +1,116 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    "helpers:pinGitHubActionDigests",
+    ":semanticCommits",
+    ":dependencyDashboard",
+    ":configMigration"
+  ],
+  "dependencyDashboardTitle": "Renovate Dashboard :robot:",
+  "branchPrefix": "renovate/",
+  "timezone": "America/New_York",
+  "rebaseWhen": "conflicted",
+  "prConcurrentLimit": 3,
+  "prHourlyLimit": 2,
+  "schedule": ["after 10pm", "before 6am"],
+  "osvVulnerabilityAlerts": true,
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": ["before 4am on monday"],
+    "automerge": true,
+    "automergeType": "branch"
+  },
+  "vulnerabilityAlerts": {
+    "enabled": true,
+    "labels": ["security", "priority/high"],
+    "automerge": true,
+    "schedule": ["at any time"]
+  },
+  "packageRules": [
+    {
+      "description": "Block vitest 4.x until @cloudflare/vitest-pool-workers supports it",
+      "matchPackageNames": ["vitest"],
+      "matchUpdateTypes": ["major"],
+      "allowedVersions": "<4.0.0"
+    },
+    {
+      "description": "Group Cloudflare packages",
+      "groupName": "cloudflare packages",
+      "matchPackageNames": ["/^@cloudflare//", "wrangler"]
+    },
+    {
+      "description": "Group Biome packages",
+      "groupName": "biome packages",
+      "matchPackageNames": ["/^@biomejs//"]
+    },
+    {
+      "description": "Group Hono framework updates",
+      "groupName": "hono packages",
+      "matchPackageNames": ["hono", "/^@hono//"]
+    },
+    {
+      "description": "Auto-merge GitHub Actions (grouped)",
+      "matchManagers": ["github-actions"],
+      "groupName": "github-actions",
+      "groupSlug": "github-actions",
+      "matchUpdateTypes": ["minor", "patch", "digest"],
+      "automerge": true,
+      "automergeType": "branch",
+      "minimumReleaseAge": "3 days"
+    },
+    {
+      "description": "Auto-merge npm patch updates",
+      "matchManagers": ["npm"],
+      "matchUpdateTypes": ["patch"],
+      "automerge": true,
+      "automergeType": "pr",
+      "minimumReleaseAge": "3 days"
+    },
+    {
+      "description": "Auto-merge npm minor updates for dev dependencies",
+      "matchManagers": ["npm"],
+      "matchDepTypes": ["devDependencies"],
+      "matchUpdateTypes": ["minor"],
+      "automerge": true,
+      "automergeType": "pr",
+      "minimumReleaseAge": "7 days"
+    },
+    {
+      "matchUpdateTypes": ["major"],
+      "semanticCommitType": "feat",
+      "commitMessagePrefix": "{{semanticCommitType}}({{semanticCommitScope}})!:",
+      "commitMessageExtra": "( {{currentVersion}} → {{newVersion}} )",
+      "labels": ["type/major"]
+    },
+    {
+      "matchUpdateTypes": ["minor"],
+      "semanticCommitType": "feat",
+      "commitMessageExtra": "( {{currentVersion}} → {{newVersion}} )",
+      "labels": ["type/minor"]
+    },
+    {
+      "matchUpdateTypes": ["patch"],
+      "semanticCommitType": "fix",
+      "commitMessageExtra": "( {{currentVersion}} → {{newVersion}} )",
+      "labels": ["type/patch"]
+    },
+    {
+      "matchUpdateTypes": ["digest"],
+      "semanticCommitType": "chore",
+      "commitMessageExtra": "( {{currentDigestShort}} → {{newDigestShort}} )",
+      "labels": ["type/digest"]
+    },
+    {
+      "matchManagers": ["npm"],
+      "semanticCommitScope": "npm",
+      "commitMessageTopic": "package {{depName}}"
+    },
+    {
+      "matchManagers": ["github-actions"],
+      "semanticCommitType": "ci",
+      "semanticCommitScope": "github-action",
+      "commitMessageTopic": "action {{depName}}"
+    }
+  ]
+}
