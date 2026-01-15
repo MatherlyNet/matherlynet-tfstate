@@ -37,17 +37,17 @@
 		{
 			"description": "Group Cloudflare packages",
 			"groupName": "cloudflare packages",
-			"matchPackageNames": ["/^@cloudflare//", "wrangler"]
+			"matchPackageNames": ["/^@cloudflare/", "wrangler"]
 		},
 		{
 			"description": "Group Biome packages",
 			"groupName": "biome packages",
-			"matchPackageNames": ["/^@biomejs//"]
+			"matchPackageNames": ["/^@biomejs/"]
 		},
 		{
 			"description": "Group Hono framework updates",
 			"groupName": "hono packages",
-			"matchPackageNames": ["hono", "/^@hono//"]
+			"matchPackageNames": ["hono", "/^@hono/"]
 		},
 		{
 			"description": "Auto-merge GitHub Actions (grouped)",
